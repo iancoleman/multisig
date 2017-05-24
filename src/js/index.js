@@ -283,12 +283,6 @@
             },
         },
         {
-            name: "CLAM",
-            onSelect: function() {
-                network = bitcoin.networks.clam;
-            },
-        },
-        {
             name: "Dogecoin",
             onSelect: function() {
                 network = bitcoin.networks.dogecoin;
@@ -316,18 +310,6 @@
             name: "Litecoin",
             onSelect: function() {
                 network = bitcoin.networks.litecoin;
-            },
-        },
-        {
-            name: "Namecoin",
-            onSelect: function() {
-                network = bitcoin.networks.namecoin;
-            },
-        },
-        {
-            name: "Peercoin",
-            onSelect: function() {
-                network = bitcoin.networks.peercoin;
             },
         },
         {
