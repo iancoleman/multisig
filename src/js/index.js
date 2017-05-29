@@ -7,6 +7,7 @@
     var parts = [];
     var orderings = [];
     var discoveryProcesses = [];
+    var discoveriesCompleted = 0;
 
     var DOM = {};
     DOM.feedback = $(".feedback");
@@ -27,6 +28,8 @@
     DOM.discover = $(".discover");
     DOM.discovered = $(".discovered");
     DOM.discoverInProgress = $(".discover-in-progress");
+    DOM.remainingDiscoveries = $(".discover-in-progress .remaining");
+    DOM.totalDiscoveries = $(".discover-in-progress .total");
 
     function init() {
         // Events
@@ -122,6 +125,9 @@
         if (orderings.length == 0) {
             return;
         }
+        var totalDiscoveries = orderings.length * (orderings[0].length + 1);
+        DOM.totalDiscoveries.text(totalDiscoveries);
+        discoveriesCompleted = 0;
         showDiscoverInProgress();
         var p = new Discover({
             orderings: orderings,
@@ -135,6 +141,8 @@
     }
 
     function displayDiscovery(el) {
+        discoveriesCompleted = discoveriesCompleted + 1;
+        showDiscoverInProgress();
         DOM.discovered.append(el);
     }
 
@@ -153,6 +161,7 @@
     }
 
     function showDiscoverInProgress() {
+        DOM.remainingDiscoveries.text(discoveriesCompleted);
         DOM.discoverInProgress.removeClass("hidden");
     }
 
