@@ -24,3 +24,6 @@
 // Discover button checks addresses for transactions
 // Discover button does nothing if there are no parts
 // Changing the parts mid-discover stops the current discovery process
+// Changing the parts mid-discover clears the previous discovery information
+// The discovery process says X of Y discoveries completed
+// The discovery process can be cancelled part way through by pressing the cancel button

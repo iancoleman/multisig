@@ -30,6 +30,7 @@
     DOM.discoverInProgress = $(".discover-in-progress");
     DOM.remainingDiscoveries = $(".discover-in-progress .remaining");
     DOM.totalDiscoveries = $(".discover-in-progress .total");
+    DOM.cancelDiscover = $(".cancel-discover");
 
     function init() {
         // Events
@@ -38,6 +39,7 @@
         DOM.signatoriesCount.on("change", detailsChanged);
         DOM.partOrder.on("change", detailsChanged);
         DOM.discover.on("click", discoverClicked);
+        DOM.cancelDiscover.on("click", cancelDiscoverClicked);
         setQrEvents(DOM.showQrEls);
         hideFeedback();
         populateNetworkSelect();
@@ -80,6 +82,11 @@
         stopExistingDiscoveries();
         clearDisplayedDiscoveries();
         discoverUsedAddresses();
+    }
+
+    function cancelDiscoverClicked() {
+        stopExistingDiscoveries();
+        hideDiscoverInProgress();
     }
 
     // Private methods
@@ -162,10 +169,14 @@
 
     function showDiscoverInProgress() {
         DOM.remainingDiscoveries.text(discoveriesCompleted);
+        DOM.cancelDiscover.removeClass("hidden");
+        DOM.discover.addClass("hidden");
         DOM.discoverInProgress.removeClass("hidden");
     }
 
     function hideDiscoverInProgress() {
+        DOM.cancelDiscover.addClass("hidden");
+        DOM.discover.removeClass("hidden");
         DOM.discoverInProgress.addClass("hidden");
     }
 

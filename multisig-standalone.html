@@ -154,6 +154,7 @@
                     discovery, which may pose a privacy issue for some users.
                     </p>
                     <button class="discover btn btn-default" data-translate>Discover</button>
+                    <button class="cancel-discover btn btn-default hidden" data-translate>Cancel</button>
                     <div class="discovered">
                         <!-- populated by javascript -->
                     </div>
@@ -13417,6 +13418,7 @@ Translate = new (function() {
     DOM.discoverInProgress = $(".discover-in-progress");
     DOM.remainingDiscoveries = $(".discover-in-progress .remaining");
     DOM.totalDiscoveries = $(".discover-in-progress .total");
+    DOM.cancelDiscover = $(".cancel-discover");
 
     function init() {
         // Events
@@ -13425,6 +13427,7 @@ Translate = new (function() {
         DOM.signatoriesCount.on("change", detailsChanged);
         DOM.partOrder.on("change", detailsChanged);
         DOM.discover.on("click", discoverClicked);
+        DOM.cancelDiscover.on("click", cancelDiscoverClicked);
         setQrEvents(DOM.showQrEls);
         hideFeedback();
         populateNetworkSelect();
@@ -13467,6 +13470,11 @@ Translate = new (function() {
         stopExistingDiscoveries();
         clearDisplayedDiscoveries();
         discoverUsedAddresses();
+    }
+
+    function cancelDiscoverClicked() {
+        stopExistingDiscoveries();
+        hideDiscoverInProgress();
     }
 
     // Private methods
@@ -13549,10 +13557,14 @@ Translate = new (function() {
 
     function showDiscoverInProgress() {
         DOM.remainingDiscoveries.text(discoveriesCompleted);
+        DOM.cancelDiscover.removeClass("hidden");
+        DOM.discover.addClass("hidden");
         DOM.discoverInProgress.removeClass("hidden");
     }
 
     function hideDiscoverInProgress() {
+        DOM.cancelDiscover.addClass("hidden");
+        DOM.discover.removeClass("hidden");
         DOM.discoverInProgress.addClass("hidden");
     }
 
