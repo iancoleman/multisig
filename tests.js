@@ -20,6 +20,7 @@
 // M is set to a sensible default
 // N is displayed to the user
 // M can be changed
+// Changing M updates the lexicographical address
 // Setting parts to blank space clears existing details
 // Discover button checks addresses for transactions
 // Discover button does nothing if there are no parts

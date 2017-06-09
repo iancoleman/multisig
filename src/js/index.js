@@ -5,6 +5,7 @@
     var showQr = false;
     var network = bitcoin.networks.bitcoin;
     var parts = [];
+    var orderedPubkeys = [];
     var orderings = [];
     var discoveryProcesses = [];
     var discoveriesCompleted = 0;
@@ -31,6 +32,8 @@
     DOM.remainingDiscoveries = $(".discover-in-progress .remaining");
     DOM.totalDiscoveries = $(".discover-in-progress .total");
     DOM.cancelDiscover = $(".cancel-discover");
+    DOM.bip45order = $(".bip45-order");
+    DOM.bip45address = $(".bip45-address");
 
     function init() {
         // Events
@@ -67,9 +70,14 @@
         var pubKeys = ordering.map(function(o) { return o.pubkey });
         var M = parseInt(DOM.signatoriesCount.val());
         var multisig = bitcoin.pubkeysToMultisig(M, pubKeys, network);
+        // address
         DOM.redeemScript.text(multisig.redeemScript.toHex());
         DOM.pubkeyScript.val(multisig.scriptPubKey.toHex());
         DOM.address.val(multisig.address);
+        // bip45 values
+        var k = orderedPubkeys.map(function(p) { return p.pubkey });
+        var bip45multisig = bitcoin.pubkeysToMultisig(M, k, network);
+        DOM.bip45address.val(bip45multisig.address);
     }
 
     function networkChanged(e) {
@@ -105,6 +113,22 @@
         }
         var M = initialSignatoryCount(N);
         DOM.signatoriesCount.val(M);
+        // lexicographical order
+        orderedPubkeys = [];
+        for (var i=0; i<parts.length; i++) {
+            var part = parts[i];
+            orderedPubkeys.push({
+                pubkey: part.pubkey,
+                hex: part.pubkey.toHex(),
+                indexChar: part.indexChar,
+            });
+        }
+        orderedPubkeys.sort(function(a, b) { return a.hex > b.hex });
+        var orderText = "";
+        for (var i=0; i<orderedPubkeys.length; i++) {
+            orderText = orderText + orderedPubkeys[i].indexChar;
+        }
+        DOM.bip45order.val(orderText);
         // Ordering
         DOM.partOrder.empty();
         for (var i=0; i<orderings.length; i++) {
